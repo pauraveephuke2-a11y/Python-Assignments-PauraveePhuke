@@ -1,2 +1,91 @@
-# Python-Assignments-PauraveePhuke
-Python assignments
+import numpy as np
+import pandas as pd
+
+# ==========================================
+# STEP 1: Create / Load Dataset
+# ==========================================
+# For demonstration, creating a DataFrame with missing and duplicate values.
+# In practice, replace this with: df = pd.read_csv("your_file.csv") or pd.read_excel("your_file.xlsx")
+data = {
+    "Student_ID": [101, 102, 103, 104, 105, 103, 106, 107],
+    "Name": ["Aarav", "Ananya", "Rohan", "Priya", "Kabir", "Rohan", "Sanya", "Neha"],
+    "Marks": [85.0, np.nan, 92.0, 78.0, np.nan, 92.0, 88.0, 95.0],
+    "City": ["Mumbai", "Delhi", "Pune", np.nan, "Bangalore", "Pune", "Mumbai", "Delhi"],
+}
+
+df = pd.DataFrame(data)
+
+print("--- INITIAL DATAFRAME ---")
+print(df)
+print("\n" + "=" * 50 + "\n")
+
+
+# ==========================================
+# STEP 2: Initial Exploration
+# ==========================================
+print("--- DATA EXPLORATION ---")
+print("\n1. First 5 Rows (head):")
+print(df.head())
+
+print("\n2. Dataset Information (info):")
+df.info()
+
+print("\n3. Statistical Summary (describe):")
+print(df.describe())
+print("\n" + "=" * 50 + "\n")
+
+
+# ==========================================
+# STEP 3: Handling Missing Values
+# ==========================================
+print("--- HANDLING MISSING VALUES ---")
+print("\nMissing values per column before handling:")
+print(df.isnull().sum())
+
+# Fill missing numerical values ('Marks') with the mean score
+mean_marks = df["Marks"].mean()
+df["Marks"].fillna(mean_marks, inplace=True)
+
+# Fill missing categorical values ('City') with the mode (most frequent value)
+mode_city = df["City"].mode()[0]
+df["City"].fillna(mode_city, inplace=True)
+
+print("\nMissing values per column after handling:")
+print(df.isnull().sum())
+print("\n" + "=" * 50 + "\n")
+
+
+# ==========================================
+# STEP 4: Identifying & Removing Duplicates
+# ==========================================
+print("--- IDENTIFYING AND REMOVING DUPLICATES ---")
+print("\nDuplicate rows identified:")
+print(df[df.duplicated()])
+
+# Drop duplicate records
+df.drop_duplicates(inplace=True)
+print("\nDataFrame after removing duplicates:")
+print(df)
+print("\n" + "=" * 50 + "\n")
+
+
+# ==========================================
+# STEP 5: Data Selection and Filtering (.loc[])
+# ==========================================
+print("--- DATA FILTERING USING .loc[] ---")
+# Filter students with Marks > 85
+filtered_df = df.loc[
+    df["Marks"] > 85, ["Student_ID", "Name", "Marks", "City"]
+]
+print("\nStudents scoring more than 85 marks:")
+print(filtered_df)
+print("\n" + "=" * 50 + "\n")
+
+
+# ==========================================
+# STEP 6: Save Cleaned Dataset (Optional)
+# ==========================================
+# df.to_csv("cleaned_data.csv", index=False)
+print("--- PREPROCESSING COMPLETE ---")
+print("\nFinal Cleaned DataFrame:")
+print(df)
